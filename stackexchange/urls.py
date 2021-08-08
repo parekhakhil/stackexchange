@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from searchresults.views import SearchView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("search/", SearchView.as_view(), name="search-so"),
 ]

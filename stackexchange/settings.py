@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third party
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -123,3 +125,21 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "stack_table",
+    }
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_THROTTLE_CLASSES": ("rest_framework.throttling.AnonRateThrottle",),
+    "DEFAULT_THROTTLE_RATES": {
+        "anon_min": "5/minute",
+        "anon_day": "100/day",
+    },
+    # "DEFAULT_PAGINATION_CLASS": "searchresults.pagination.CustomPagination",
+    # "MAX_PAGE_SIZE": 30,
+    # "PAGE_SIZE": 10,
+}
