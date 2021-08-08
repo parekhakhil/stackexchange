@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from searchresults.views import SearchView
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("search/", SearchView.as_view(), name="search-so"),
+    path("search/",cache_page(60*2)(SearchView.as_view()), name="search-so"),
 ]

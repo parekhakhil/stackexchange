@@ -22,7 +22,7 @@ def get_data(topic, pagesize):
 
 
 class SearchView(APIView):
-    throttle_classes = [PerMinThrottle, PerDayThrottle]
+    throttle_classes = [PerMinThrottle]
     def get(self, request, *args, **kwargs):
         print(request.GET)
         topic = request.GET.get("query")
