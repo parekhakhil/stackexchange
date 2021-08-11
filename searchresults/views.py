@@ -6,11 +6,12 @@ from .throttle import PerMinThrottle, PerDayThrottle
 from django.core.paginator import Paginator
 
 # Create your views here.
-def get_data(topic, pagesize):
+def get_data(topic, pagesize,tag):
     url = "http://api.stackexchange.com/search/advanced"
     params = {
         "q": topic,
         "pagesize": pagesize,
+        'tagged':tag,
         "site": "stackoverflow",
         "order": "desc",
         "sort": "activity",
@@ -22,13 +23,15 @@ def get_data(topic, pagesize):
 
 
 class SearchView(APIView):
-    throttle_classes = [PerMinThrottle]
+    throttle_classes = [PerMinThrottle,PerDayThrottle]
     def get(self, request, *args, **kwargs):
         print(request.GET)
         topic = request.GET.get("query")
+        rows_per_page = request.GET.get('row_per_page')
+        tag = request.GET.get('tag')
         pagesize = 50
-        results = get_data(topic, pagesize)
-        paginator = Paginator(results, 10)
+        results = get_data(topic, pagesize,tag)
+        paginator = Paginator(results, rows_per_page)
         page = request.GET.get("page", 1)
         results = paginator.get_page(page)
         data = {}
